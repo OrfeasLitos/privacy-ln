@@ -1,3 +1,4 @@
+%\newcommand{\showtext}
 \section{Payment Network Functionality}
   \label{appendix:payfunc}
   \begin{figure}[H]
@@ -60,6 +61,7 @@
     \label{alg:fpaynet:interface}
   \end{figure}
 
+  \maybeshow{
   All players need to register in order to use channels. The registration of
   \alice{} works as follows: \alice{} inputs her desired delay and relayDelay
   that will be used for all her future channels. The first denotes how often she
@@ -78,6 +80,7 @@
   call happens every time \fpaynet{} \textsc{read}s from \ledger. The formal
   definition of \texttt{checkClosed}() can be found in
   Fig.~\ref{alg:fpaynet:close:func}, along with a discussion of its purpose.
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- registration and corruption}
@@ -156,6 +159,7 @@
     \label{alg:fpaynet:support}
   \end{figure}
 
+  \maybeshow{
   The process of \alice{} opening a channel with \bob{} is as follows: First
   \alice{} asks \fpaynet{} to open and \fpaynet{} informs \simulator.
   \simulator{} provides the necessary keys and IDs for the new channel to
@@ -167,6 +171,7 @@
   that to \fpaynet{} that the channel is open and \fpaynet{} finally stores the
   channel as open. This last exchange is needed to match the real-world
   interaction.
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- open}
@@ -274,6 +279,7 @@
     \label{alg:fpaynet:open}
   \end{figure}
 
+  \maybeshow{
   When instructed to perform a payment, \fpaynet{} simply takes note of the
   message and forwards it to \simulator. It also remembers to inform the payer
   that the payment has been completed when \simulator{} says so. Observe here
@@ -283,6 +289,7 @@
   see \fpaynet{} keeps track of requested and ostensibly carried out updates and
   ensures that upon channel closure the balances are as expected, therefore
   ensuring funds security.
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- pay}
@@ -315,6 +322,7 @@
     \label{alg:fpaynet:pay}
   \end{figure}
 
+  \maybeshow{
   The message \textsc{resolvePays}, sent by \simulator{}, is supposed to contain
   a list of resolved payments, along with who was charged for each payment after
   all. For each entry there are four ``happy paths'' that do not lead to
@@ -339,6 +347,7 @@
   reported with an \textsc{update} message by \simulator{}
   (Fig.~\ref{alg:fpaynet:resolvepay:loops},
   l.~\ref{alg:fpaynet:resolvepay:loops:halt:do}).
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- resolve payments}
@@ -475,6 +484,7 @@
     \label{alg:fpaynet:resolvepay:loops}
   \end{figure}
 
+  \maybeshow{
   Similarly to payment instructions, when \fpaynet{} receives a message
   instructing it to close a channel (Fig.~\ref{alg:fpaynet:close}), it takes a
   note of the pending closure, it stops serving any more requests for this
@@ -490,6 +500,7 @@
   l.~\ref{alg:fpaynet:close:func:idle}). Once more \fpaynet{} trusts \simulator,
   but later checks that the chain contains the correct transactions with
   \texttt{checkClosed}() (Fig.~\ref{alg:fpaynet:close:func}).
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- close}
@@ -552,6 +563,7 @@
     \label{alg:fpaynet:close}
   \end{figure}
 
+  \maybeshow{
   After every \textsc{read} \fpaynet{} sends to \ledger{} and its response is
   received, \texttt{checkClosed}() (Fig.~\ref{alg:fpaynet:close:func}) is
   called. \fpaynet{} checks the input state $\Sigma$ for transactions that close
@@ -566,6 +578,7 @@
   (l.~\ref{alg:fpaynet:close:func:idle}) and incorrect on- or off-chain balance
   after the closing of all of the player's channels
   (l.~\ref{alg:fpaynet:close:func:balance}).
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- \texttt{checkClosed}()}
@@ -655,6 +668,7 @@
     \label{alg:fpaynet:close:func}
   \end{figure}
 
+  \maybeshow{
   \textsc{poll} is a request that every player has to make to \fpaynet{}
   periodically (once every \texttt{delay} blocks, as set on registration) in
   order to remain non-negligent. In a software implementation, such a request
@@ -666,6 +680,7 @@
   (l.~\ref{alg:fpaynet:poll:haspolled:halt}). If on the other hand a channel has
   been closed maliciously but the offended player did not \textsc{poll} in time,
   she is marked as negligent (l.~\ref{alg:fpaynet:poll:negligent}).
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- poll}
@@ -713,6 +728,7 @@
     \label{alg:fpaynet:poll}
   \end{figure}
 
+  \maybeshow{
   The last part of \fpaynet{} (Fig.~\ref{alg:fpaynet:daemon}) contains some
   additional ``daemon'' messages that help various processes carry on.
   \textsc{pushFulfill}, \textsc{pushAdd} and \textsc{commit} are simply
@@ -727,6 +743,7 @@
   channel. The request is noted and forwarded to \simulator. \textsc{getNews}
   requests from \fpaynet{} information on newly opened, closed and updated
   channels.
+  }
 
   \begin{figure}[H]
     \begin{systembox}{\fpaynet{} -- daemon messages}

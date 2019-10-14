@@ -22,6 +22,14 @@
   \fi%
 }
 
+%--- Macro \maybeshow to automate toggling whether text is visible ------
+
+\newcommand{\maybeshow}[1]{%
+  \ifcsname{}showtext\endcsname%
+    #1%
+  \fi%
+}
+
 %----- Theorems ----------------------------------------------------------------
 \ifelseieee{\newtheorem{theorem}{Theorem}}{}
 \ifelseieee{\newtheorem{lemma}{Lemma}}{}
