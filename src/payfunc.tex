@@ -295,12 +295,13 @@ ensuring funds security.
         \State ensure that $\overrightarrow{\mathtt{path}}$ consists of open
         channels that form a path of capacity at least $x$ (in the right
         direction) from \alice{} to \bob
-        \State in every channel $\in \overrightarrow{\mathtt{path}}$, reduce
-        balance of party closer to payer by $x$ and increase balance of party
-        closer to payee by $x$
-        \State for every channel $\in \overrightarrow{\mathtt{path}}$, add
-        \texttt{receipt} of new balance to both parties'
-        \texttt{updatesToReport}
+        \State starting on $|\overrightarrow{\mathtt{path}}|$ clock ticks after
+        receiving this message, on every clock tick, channel $\in
+        \overrightarrow{\mathtt{path}}$, reduce balance of party closer to payer
+        by $x$ and increase balance of party closer to payee by $x$ in the next
+        channel on the $\overrightarrow{\mathtt{path}}$ and add \texttt{receipt}
+        of new balance to both parties' \texttt{updatesToReport}, starting from
+        the unique channel in which the payee is participating
       \EndIndent
     \end{algorithmic}
   \end{systembox}
