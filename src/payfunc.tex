@@ -515,3 +515,22 @@ and updated channels.
   \caption{}
   \label{alg:fpaynet:daemon}
 \end{figure}
+
+\begin{itemize}
+  \item The functionality above provides unobservability of off-chain payments
+  and can be realised by a protocol in which all players communicate with every
+  other player on every round -- sending garbage to the ones with which they
+  don't have to interact. Such a protocol has $n^2$ communication cost.
+  Indistinguishability holds only in case of a global passive adversary (no
+  corruptions).
+  \item We can also assert unobservability for paths that consist of honest
+  parties only in the case where there is a system-wide maximum path length $l$
+  and corruptions activate only after $2l$ clock ticks. Both the functionality
+  and the protocol would be the same.
+  \item In case of a normal corruption model, the functionality has to leak the
+  previous and next player on the path, along with the payment value, to a
+  corrupted player that is to receive its message on this clock tick. Also, the
+  functionality has to wait for confirmation from the corrupted player before
+  sending the message to the next player (but this isn't strictly about
+  privacy).
+\end{itemize}
