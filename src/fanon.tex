@@ -1,0 +1,58 @@
+\section{Anonymous Communication Functionality}
+  \label{sec:fanon}
+  \begin{figure}[H]
+    \begin{systembox}{$\fanon^{\mathcal{D}}$} \orfeas{global or per-message
+    delay?}
+      State:
+      \begin{itemize}
+        \item a two-way mapping \texttt{map} between pysical and logical names
+        \item a list \texttt{outbound} of messages, recipients and remaining
+        timeout
+        \item the latest time $t$
+      \end{itemize}
+      \begin{algorithmic}[1]
+        \State Upon receiving any message by \alice{} and prior to handling it:
+        \Indent
+          \State send \textsc{read-clock} to \gFclock and assign reply to $t'$
+          \If{$t' = t + 1$}
+            \State decrement the delay (third element) of each \texttt{outbound}
+            entry if positive
+            \State increment $t$
+          \EndIf
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{register}, \texttt{nym}) by \alice:
+        \Indent
+          \State ensure $\mathtt{logicalOf}(\alice) = \bot$
+          \Comment{\orfeas{remove?}}
+          \State add (\alice, \texttt{nym}) to \texttt{map}
+          \State send (\textsc{register}) as \alice{} to \gFclock
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{send}, \texttt{party}, $M$) from \alice:
+        \Indent
+          \State add (\texttt{physicalAddressOf}(\texttt{party}), $M$,
+          \texttt{sample}($\mathcal{D}$)) to \texttt{outbound} \Comment{sender
+          optional, can be part of payload}
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{fetch}) from \alice:
+        \Indent
+          \State add to \texttt{new} all $M: (\alice, M, 0) \in
+          \mathtt{outbound}$, remove entries from \texttt{outbound}
+          \State send (\textsc{new-messages}, \texttt{new}) to \alice
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{advance-clock}) from \alice:
+        \Indent
+          \State send (\textsc{advance-clock}) as \alice{} to \gFclock
+        \EndIndent
+      \end{algorithmic}
+    \end{systembox}
+    \caption{}
+    \label{alg:fanon}
+  \end{figure}
