@@ -148,10 +148,10 @@
           $(phb_{\mathrm{rev}}, shb_{\mathrm{rev}})$, \textit{tid}) to
           \texttt{pendingOpen}
           \label{alg:payprot:open:env:pendingOpen}
-          \State send (\textsc{deliver}, \bob, (\textsc{openChannel}, $x,
+          \State send (\textsc{openChannel}, $x,
           \mathtt{delay} + \tochain, ph_F, phb_{\mathrm{pay}},
           phb_{\mathrm{dpay}}, phb_{\mathrm{htlc}},$ $ph_{\mathrm{com}, 1},
-          phb_{\mathrm{rev}}$, \textit{tid})) to \anonfunc
+          phb_{\mathrm{rev}}$, \textit{tid}) to \bob
         \EndIndent
       \end{algorithmic}
     \end{protocolbox}
