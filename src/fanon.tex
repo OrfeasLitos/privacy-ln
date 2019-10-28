@@ -13,7 +13,7 @@
       \begin{algorithmic}[1]
         \State Upon receiving any message by \alice and prior to handling it:
         \Indent
-          \State send \textsc{read-clock} to \gFclock and assign reply to $t'$
+          \State send (\textsc{read-clock}) to \gFclock and assign reply to $t'$
           \If{$t' = t + 1$}
             \State decrement the delay (third element) of each \texttt{outbound}
             entry if positive
@@ -24,7 +24,7 @@
 
         \State Upon receiving (\textsc{register}, \texttt{nym}) by \alice:
         \Indent
-          \State ensure $\mathtt{logicalOf}(\alice) = \bot$
+          \State ensure $\mathtt{logicalAddressOf}(\alice) = \bot$
           \Comment{\orfeas{remove?}}
           \State add (\alice, \texttt{nym}) to \texttt{map}
           \State send (\textsc{register}) as \alice to \gFclock
@@ -47,10 +47,7 @@
         \EndIndent
         \Statex
 
-        \State Upon receiving (\textsc{advance-clock}) from \alice:
-        \Indent
-          \State send (\textsc{advance-clock}) as \alice to \gFclock
-        \EndIndent
+        \State Forward (\textsc{advance-clock}) messages to \gFclock
       \end{algorithmic}
     \end{systembox}
     \caption{}
