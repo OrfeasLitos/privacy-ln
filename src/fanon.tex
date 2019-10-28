@@ -5,10 +5,10 @@
     delay?}
       State:
       \begin{itemize}
-        \item a two-way mapping \texttt{map} between pysical and logical names
-        \item a list \texttt{outbound} of messages, recipients and remaining
+        \item \texttt{map}: a two-way mapping between physical and logical names
+        \item \texttt{outbound}: a list of messages, recipients and remaining
         timeout
-        \item the latest time $t$
+        \item $t$: the latest time, as reported by \gFclock
       \end{itemize}
       \begin{algorithmic}[1]
         \State Upon receiving any message by \alice{} and prior to handling it:
