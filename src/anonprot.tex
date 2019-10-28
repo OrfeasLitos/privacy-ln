@@ -1,0 +1,66 @@
+\section{Anonymous Communication Protocol}
+  \label{sec:anonprot}
+
+  \begin{figure}[H]
+    \begin{systembox}{$\mathcal{F}_{\mathrm{token}}$}
+      Upon receiving (\textsc{pass-token}, \bob) by \alice, send
+      (\textsc{pass-token}) to \bob
+    \end{systembox}
+    \caption{}
+    \label{alg:tokenfunc}
+  \end{figure}
+
+  \begin{figure}[H]
+    \begin{protocolbox}{$\Pi_{\mathrm{anon}}^{\mathcal{F}_{\mathrm{token}}}$ --
+    push model}
+      Each player sends one \textsc{circulate} message to every player in
+      $\mathcal{P}$ per payload. The first
+      \textsc{circulate} message is sent to the next player in lexicographic
+      order and the player continues in a round-robin fashion. \TODO{write
+      better description}
+      \begin{algorithmic}[1]
+        \State Upon receiving (\textsc{send}, \texttt{receiver}, $M$) from
+        \environment:
+        \Indent
+          \State $\mathtt{player} \overset{\$}{\gets} \mathcal{P}$
+          \State calculate the last player that will receive a
+          \textsc{circulate} message and encrypt \texttt{receiver} for them,
+          encrypt $M$ for \texttt{receiver} and garbage for every other player
+          \If{$\mathtt{player} \neq \mathrm{us}$}
+            \State send (\textsc{pass-token}, \texttt{player}) to
+            $\mathcal{F}_{\mathrm{token}}$
+          \Else
+            \State send (\textsc{circulate}, message of next player) to next
+            player
+          \EndIf
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{pass-token}) from
+        $\mathcal{F}_{\mathrm{token}}$:
+        \Indent
+          \State encrypt garbage for every player
+          \State send (\textsc{circulate}, message of next player) to next
+          player
+        \EndIndent
+        \Statex
+
+        \State Upon receiving (\textsc{circulate}, $C$) from \bob:
+        \Indent
+          \State decrypt $C$ to $M$
+          \If{$M$ is \texttt{receiver}}
+            \State store \texttt{receiver} for sending (\textsc{pass-token},
+            \texttt{receiver}) to $\mathcal{F}_{\mathrm{token}}$ upon receiving
+            (\textsc{circulate}, $C'$) for the last time for this particular
+            payload
+          \ElsIf{$M$ is a valid payload}
+            \State store $M$ for returning to \environment upon receiving
+            (\textsc{pass-token}) from $\mathcal{F}_{\mathrm{token}}$
+          \EndIf
+          \State send (\textsc{circulate}, encrypted garbage) to next player
+        \EndIndent
+      \end{algorithmic}
+    \end{protocolbox}
+    \caption{Realises \anonfunc in the global passive adversary case}
+    \label{alg:anonprot:push}
+  \end{figure}
