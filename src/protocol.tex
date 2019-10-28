@@ -9,14 +9,14 @@
   is generated locally.
   }
 
-  Messages to and from \bob{} should be interpreted as \textsc{send} and
-  \textsc{receive} messages to and from \fanon{} with \bob{} as the sender and
-  the receiver respectively. \bob{} is a ``logical'' (LN-only) address,
-  therefore \alice{} need not know \bob's ``real'' address. This address is only
+  Messages to and from \bob should be interpreted as \textsc{send} and
+  \textsc{receive} messages to and from \fanon with \bob as the sender and
+  the receiver respectively. \bob is a ``logical'' (LN-only) address,
+  therefore \alice need not know \bob's ``real'' address. This address is only
   known by \fanon.
 
   \begin{figure}[H]
-    \begin{protocolbox}{$\Pi_{\mathrm{LN}}$ (self is \alice{} always) --
+    \begin{protocolbox}{$\Pi_{\mathrm{LN}}$ (self is \alice always) --
     support}
       \begin{algorithmic}[1]
         \State Initialisation:
@@ -49,7 +49,7 @@
           at least once every \texttt{delay} blocks}
           \label{alg:protocol:support:delay}
           \State $\mathtt{relayDelay} \gets \mathrm{relayDelay}$
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \label{alg:protocol:support:read}
           \State $\left(pk_{\alice}, sk_{\alice}\right) \gets
@@ -62,10 +62,10 @@
 
         \State Upon receiving (\textsc{toppedUp}) from \environment:
         \Indent
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \State assign the sum of all output values that are exclusively
-          spendable by \alice{} to \texttt{onChainBalance}
+          spendable by \alice to \texttt{onChainBalance}
           \State send (\textsc{registered}) to \environment
         \EndIndent
         \Statex
@@ -74,8 +74,8 @@
         $\left(\textsc{register}\right)$ or (\textsc{toppedUp}):
         \Indent
           \If{if haven't received (\textsc{register}) and (\textsc{toppedUp})
-          from \environment{} (in this order)}
-            \State send (\textsc{invalid}, $M$) to \environment{} and ignore
+          from \environment (in this order)}
+            \State send (\textsc{invalid}, $M$) to \environment and ignore
             message
           \EndIf
         \EndIndent
@@ -116,7 +116,7 @@
   number of base keypairs (funding, payment, delayed payment, HTLC), along with
   a seed for the per-update key shares, a master keypair and a share keypair
   used for revocation. She then sends the public keys along with the desired
-  delay and initial funds to the counterparty as specified by \environment{} in
+  delay and initial funds to the counterparty as specified by \environment in
   a message labeled also \textsc{openChannel}.
   }
 
@@ -188,7 +188,7 @@
           \label{alg:protocol:open:openChannel:pendingOpen}
           \State send (\textsc{acceptChannel}, $\mathtt{delay}  + \tochain,
           ph_F, phb_{\mathrm{pay}}, phb_{\mathrm{dpay}}, phb_{\mathrm{htlc}},$
-          $ph_{\mathrm{com}, 1}, phb_{\mathrm{rev}}$, \textit{tid}) to \bob{}
+          $ph_{\mathrm{com}, 1}, phb_{\mathrm{rev}}$, \textit{tid}) to \bob
         \EndIndent
       \end{algorithmic}
     \end{protocolbox}
@@ -210,14 +210,14 @@
         pt_F, ptb_{\mathrm{pay}}, ptb_{\mathrm{dpay}},$ $ptb_{\mathrm{htlc}},$
         $pt_{\mathrm{com}, 1}, ptb_{\mathrm{rev}}$, \textit{tid}) from \bob:
         \Indent
-          \State ensure there is a temporary ID \textit{tid} with \bob{} in
+          \State ensure there is a temporary ID \textit{tid} with \bob in
           \texttt{pendingOpen} on which \textsc{acceptChannel} hasn't been
           received
           \State associate received keys with \textit{tid}
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \State assign to \texttt{prevout} a transaction output found in
-          $\Sigma_{\alice}$ that is currently exclusively spendable by \alice{}
+          $\Sigma_{\alice}$ that is currently exclusively spendable by \alice
           and has value $y \geq x$
           \State $F \gets$ TX \{input spends \texttt{prevout} with a
           \textsc{SignDS}(TX, $sk_{\alice}$), output 0 pays $y - x$ to
@@ -240,7 +240,7 @@
           \State $\mathtt{remoteCom} \gets \mathtt{remoteCom}_1 \gets$ TX
           \{input: output 1 of $F$, outputs: $(x, ph_{\mathrm{pay}, 1})$, $(0,
           ph_{\mathrm{rev}, 1} \vee (pt_{\mathrm{dpay}, 1}, \mathtt{delay} +
-          \tochain{} \text{ relative}))$\}
+          \tochain \text{ relative}))$\}
           \State $\mathtt{localCom} \gets$ TX \{input: output 1 of $F$, outputs:
           $(x, pt_{\mathrm{rev}, 1} \vee (ph_{\mathrm{dpay}, 1},
           \mathtt{remoteDelay} \text{ relative}))$, $(0, pt_{\mathrm{pay},
@@ -251,7 +251,7 @@
           sh_F\right)$
           \State $\mathtt{lastRemoteSigned} \gets 0$
           \State send (\textsc{fundingCreated}, \textit{tid},
-          \textit{pchid}, sig) to \bob{}
+          \textit{pchid}, sig) to \bob
         \EndIndent
       \end{algorithmic}
     \end{protocolbox}
@@ -273,7 +273,7 @@
         \State Upon receiving (\textsc{fundingCreated}, \textit{tid},
         \textit{pchid}, $\mathtt{BobSig}_1$) from \bob:
         \Indent
-          \State ensure there is a temporary ID \textit{tid} with \bob{} in
+          \State ensure there is a temporary ID \textit{tid} with \bob in
           \texttt{pendingOpen} on which we have sent up to
           \textsc{acceptChannel}
           \State $ph_{\mathrm{rev}, 1} \gets
@@ -296,7 +296,7 @@
           \mathtt{localCom}_1, pt_F\right) = \mathtt{True}$
           \State $\mathtt{remoteCom} \gets \mathtt{remoteCom}_1 \gets$ TX
           \{input: output 1 of $F$, outputs: $(x, ph_{\mathrm{rev}, 1} \vee
-          (pt_{\mathrm{dpay}, 1}, \mathtt{delay} + \tochain{} \text{
+          (pt_{\mathrm{dpay}, 1}, \mathtt{delay} + \tochain \text{
           relative}))$, $(0, ph_{\mathrm{pay}, 1})$\}
           \State add $\mathtt{BobSig}_1, \mathtt{remoteCom}_1$ and
           $\mathtt{localCom}_1$ to channel entry in \texttt{pendingOpen}
@@ -305,7 +305,7 @@
           \State mark channel as ``broadcast, no \textsc{fundingLocked}''
           \label{alg:protocol:open:fundingCreated:mark}
           \State $\mathtt{lastRemoteSigned}, \mathtt{lastLocalSigned} \gets 0$
-          \State send (\textsc{fundingSigned}, \textit{pchid}, sig) to \bob{}
+          \State send (\textsc{fundingSigned}, \textit{pchid}, sig) to \bob
         \EndIndent
       \end{algorithmic}
     \end{protocolbox}
@@ -325,7 +325,7 @@
         \State Upon receiving (\textsc{fundingSigned}, \textit{pchid},
         $\mathtt{BobSig}_1$) from \bob:
         \Indent
-          \State ensure there is a channel ID \textit{pchid} with \bob{} in
+          \State ensure there is a channel ID \textit{pchid} with \bob in
           \texttt{pendingOpen} on which we have sent up to
           \textsc{fundingCreated}
           \State ensure $\textsc{VerifyDS}\left(\mathtt{BobSig}_1,
@@ -351,8 +351,8 @@
   \maybeshow{
   When either party (say \alice) receives \textsc{checkForNew} from
   \environment, she checks if the funding transaction is in the ledger. If it
-  is, it generates the keyshare for the next update and sends it to \bob{} in a
-  message labelled \textsc{fundingLocked}. When \alice{} receives a similar
+  is, it generates the keyshare for the next update and sends it to \bob in a
+  message labelled \textsc{fundingLocked}. When \alice receives a similar
   message from \bob, she considers the channel open.
   }
 
@@ -366,7 +366,7 @@
           \texttt{pendingOpen} with id \textit{pchid}, with a ``broadcast''
           and a ``no \textsc{fundingLocked}'' mark, funded with $x$ coins
           \label{alg:protocol:checkForNew:valid}
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \label{alg:protocol:checkForNew:read}
           \State ensure $\exists$ unspent TX in $\Sigma_{\alice}$ with ID
@@ -381,7 +381,7 @@
           \State replace ``broadcast'' mark in \texttt{channel} with
           ``\textsc{fundingLocked} sent''
           \State send (\textsc{fundingLocked}, \textit{pchid},
-          $ph_{\mathrm{com}, 2}$) to \bob{}
+          $ph_{\mathrm{com}, 2}$) to \bob
           \label{alg:protocol:checkForNew:send}
         \EndIndent
       \end{algorithmic}
@@ -397,11 +397,11 @@
         $pt_{\mathrm{com}, 2}$) from \bob:
         \Indent
           \State ensure there is a \texttt{channel} with ID \textit{pchid} with
-          \bob{} in \texttt{pendingOpen} with a ``no \textsc{fundingLocked}''
+          \bob in \texttt{pendingOpen} with a ``no \textsc{fundingLocked}''
           mark
           \If{\texttt{channel} is not marked with ``\textsc{fundingLocked}
           sent''} \Comment{i.e. marked with ``broadcast''}
-            \State send (\textsc{read}) to \ledger{} and assign reply to
+            \State send (\textsc{read}) to \ledger and assign reply to
             $\Sigma_{\alice}$
             \State ensure $\exists$ unspent TX in $\Sigma_{\alice}$ with ID
             \textit{pchid} and a $\left(x, ph_F \wedge pt_F\right)$ output
@@ -425,7 +425,7 @@
             \State replace ``broadcast'' mark in \texttt{channel} with
             ``\textsc{fundingLocked} sent''
             \State send (\textsc{fundingLocked}, \textit{pchid},
-            $ph_{\mathrm{com}, 2}$) to \bob{}
+            $ph_{\mathrm{com}, 2}$) to \bob
           \EndIf
         \EndIndent
       \end{algorithmic}
@@ -448,7 +448,7 @@
       \begin{algorithmic}[1]
         \State Upon receiving (\textsc{poll}) from \environment:
         \Indent
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \label{alg:protocol:poll:read}
           \State $\mathtt{toSubmit} \gets \emptyset$
@@ -497,7 +497,7 @@
         \label{alg:protocol:getnews}
         \Indent
           \State clear \texttt{newChannels}, \texttt{closedChannels},
-          \texttt{updatesToReport} and send them to \environment{} with message
+          \texttt{updatesToReport} and send them to \environment with message
           name \textsc{news}
           \label{alg:protocol:getnews:send}
         \EndIndent
@@ -564,11 +564,11 @@
 
   \maybeshow{
   When a player (say \alice) receives \textsc{pay} along with a payee (say
-  \bob), a payment amount and a path, she informs \bob{} of the upcoming payment
+  \bob), a payment amount and a path, she informs \bob of the upcoming payment
   with a \textsc{sendInvoice} message. He then generates a secret preimage and
   sends back its hash and his desired minimum slack between the present and the
   moment he has to disclose the preimage (known as ``relay delay'') in a message
-  labelled \textsc{invoice}. Subsequently \alice{} prepares a Sphinx onion
+  labelled \textsc{invoice}. Subsequently \alice prepares a Sphinx onion
   packet~\cite{sphinx} with one message for each path member, taking into
   account each hop's desired relay delay. Afterwards she creates an HTLC that
   transfers the payment amount and adds it to her channel with the first path
@@ -594,10 +594,10 @@
           in the irrevocably committed state.
           \label{alg:protocol:pay:validchannel}
           \State choose unique payment ID \textit{payid} \Comment{unique for
-          \alice{} and \bob}
+          \alice and \bob}
           \State add (\bob, $x$, $\overrightarrow{\mathtt{path}}$,
           \textit{payid}, ``waiting for invoice'') to \texttt{pendingPay}
-          \State send (\textsc{sendInvoice}, \textit{payid}) to \bob{}
+          \State send (\textsc{sendInvoice}, \textit{payid}) to \bob
           \label{alg:protocol:pay:sendinvoice}
         \EndIndent
         \Statex
@@ -609,7 +609,7 @@
           \State choose random, unique preimage $R$
           \State add (\bob, $R$, \textit{payid}) to \texttt{pendingGetPaid}
           \State send (\textsc{invoice}, $\mathcal{H}(R)$, $\mathtt{relayDelay}
-          + \tochain{}$, \textit{payid}) to \bob{}
+          + \tochain$, \textit{payid}) to \bob
         \EndIndent
       \end{algorithmic}
     \end{protocolbox}
@@ -629,7 +629,7 @@
           \State retrieve \texttt{CltvExpiryDelta}s from
           $\overrightarrow{\mathtt{path}}$ and remove entry from
           \texttt{pendingPay}
-          \State send (\textsc{read}) to \ledger{} and assign largest block
+          \State send (\textsc{read}) to \ledger and assign largest block
           number to $t$
           \State $l \gets |\left(\overrightarrow{\mathtt{path}}\right)|$
           \State $\mathtt{CltvExpiry}_l \gets t + \mathtt{minFinalCltvExpiry}$
@@ -748,11 +748,11 @@
     \begin{protocolbox}{$\Pi_{\mathrm{LN}}$ -- \textsc{updateAddHtlc} checks}
       \begin{algorithmic}[1]
         \State ensure \textit{pchid} corresponds to an open \texttt{channel}
-        in \texttt{channels} where \bob{} has at least $x$
+        in \texttt{channels} where \bob has at least $x$
         \State ensure $\mathtt{HTLCNo} = \mathtt{HTLCNo}_{\mathit{pchid}} + 1$
         \State $\left(\mathit{pchid}', x', \mathtt{OutgoingCltvExpiry},
         \delta\right) \gets \mathtt{SphinxPeel}\left(sk_{\alice}, M\right)$
-        \State send (\textsc{read}) to \ledger{} and assign largest block
+        \State send (\textsc{read}) to \ledger and assign largest block
         number to $t$
         \If{$\delta = \mathtt{receiver}$}
           \State ensure $\mathit{pchid}' = \bot, x = x',
@@ -762,7 +762,7 @@
         \Else \ \Comment{We are an intermediary}
           \State ensure $x = x', \mathtt{IncomingCltvExpiry} \geq
           \max\{\mathtt{OutgoingCltvExpiry}, t\} + \mathtt{relayDelay} +
-          2\tochain{}$
+          2\tochain$
           \label{alg:protocol:pay:updateAddHtlc:slack}
           \State ensure $\mathtt{pchid}'$ corresponds to an open channel in
           \texttt{channels} where we have at least $x$
@@ -806,7 +806,7 @@
           \texttt{localCom}
           \If{we have a channel $\mathit{phcid}'$ that has a received HTLC with
           hash $h$ with number $\mathtt{HTLCNo}'$} \Comment{We are intermediary}
-            \State send (\textsc{read}) to \ledger{} and assign reply to
+            \State send (\textsc{read}) to \ledger and assign reply to
             $\Sigma_{\alice}$
             \If{latest $\mathtt{remoteCom}'_n \in \Sigma_{\alice}$}
             \Comment{counterparty has gone on-chain}
@@ -815,7 +815,7 @@
               $pk_{\alice}$\}
               \State $\mathrm{sig} \gets \textsc{SignIBS}\left(\mathrm{TX},
               sh_{\mathrm{htlc}, n}\right)$
-              \State send (\textsc{submit}, (sig, TX)) to \ledger{}
+              \State send (\textsc{submit}, (sig, TX)) to \ledger
               \Comment{shouldn't be already spent by remote
               \texttt{HTLCTimeout}}
               \label{alg:protocol:pay:updateFulfillHtlc:submit}
@@ -835,7 +835,7 @@
   \end{figure}
 
   \maybeshow{
-  When a player receives \textsc{commit} from \environment{} accompanied by a
+  When a player receives \textsc{commit} from \environment accompanied by a
   channel ID, she generates and signs a new commitment tx and all new HTLC
   txs that correspond to unsigned added HTLCs. She then sends the signatures to
   the channel counterparty in a message labelled \textsc{commitmentSigned}.
@@ -856,7 +856,7 @@
           \State ensure \texttt{channel} is not marked as ``waiting for
           \textsc{revokeAndAck}''
           \label{alg:protocol:pay:commit:nomark}
-          \State send (\textsc{read}) to \ledger{} and assign largest block
+          \State send (\textsc{read}) to \ledger and assign largest block
           number to $t$
           \State undo adding all outgoing HTLCs in \texttt{remoteCom} for which
           we are intermediary and $\mathtt{IncomingCltvExpiry} < t +
@@ -869,7 +869,7 @@
             \State $\mathtt{remoteHTLC}_{n+1, i} \gets$ TX \{input: HTLC output
             $i$ of $\mathtt{remoteCom}_{n+1}$, output: ($c_{\mathrm{htlc, i}}$,
             $ph_{\mathrm{rev}, n+1}$ $\vee$ ($pt_{\mathrm{dpay}, n+1}$,
-            $\mathtt{delay} + \tochain{}$ relative))\}
+            $\mathtt{delay} + \tochain$ relative))\}
             \State add $\textsc{SignIBS}\left(\mathtt{remoteHTLC}_{n+1, i},
             sh_{\mathrm{htlc}, n+1}\right)$ to HTLCSigs
           \EndFor
@@ -961,7 +961,7 @@
         $st_{\mathrm{com}, n}, pt_{\mathrm{com}, n+2}$) from \bob:
         \Indent
           \State ensure there is a $\mathtt{channel} \in \mathtt{channels}$ with
-          \bob{} with ID \textit{pchid} marked as ``waiting for
+          \bob with ID \textit{pchid} marked as ``waiting for
           \textsc{revokeAndAck}''
           \label{alg:protocol:pay:revokeAndAck:ensure}
           \If{$\textsc{TestKey}\left(pt_{\mathrm{com}, n}, st_{\mathrm{com},
@@ -1019,9 +1019,9 @@
 
   \maybeshow{
   The following code defines a player's actions when she receives from
-  \environment{} one of the three messages needed to ``nudge'' her to carry on
+  \environment one of the three messages needed to ``nudge'' her to carry on
   with some particular part of the protocol. \textsc{pushFulfill} makes the
-  player read a preimage of a hash from \ledger{} and use it to fulfill the
+  player read a preimage of a hash from \ledger and use it to fulfill the
   relevant HTLC that pays her, \textsc{pushAdd} has the player send an
   \textsc{updateAddHtlc} message that is ready but has not yet been sent and
   \textsc{fulfillOnChain} requests that the player publish all HTLC txs that are
@@ -1043,7 +1043,7 @@
           $\mathtt{pendingFulfills}_{\mathit{pchid}}$ that is both in an
           ``irrevocably committed'' $\mathtt{remoteCom}_n$ and
           $\mathtt{localCom}_n$
-          \State send (\textsc{read}) to \ledger{} and assign reply to
+          \State send (\textsc{read}) to \ledger and assign reply to
           $\Sigma_{\alice}$
           \State remove (\texttt{HTLCNo}, $R$) from
           $\mathtt{pendingFulfills}_{\mathit{pchid}}$
@@ -1057,7 +1057,7 @@
             $pk_{\alice}$\}
             \State $\mathrm{sig} \gets \textsc{SignIBS}\left(\mathrm{TX},
             sh_{\mathrm{htlc}, n}\right)$
-            \State send (\textsc{submit}, (sig, TX)) to \ledger{}
+            \State send (\textsc{submit}, (sig, TX)) to \ledger
             \Comment{shouldn't be already spent by remote \texttt{HTLCTimeout}}
             \label{alg:protocol:pushfulfill:submit}
           \EndIf
@@ -1088,7 +1088,7 @@
         \State Upon receiving (\textsc{fulfillOnChain}) from \environment:
         \label{alg:protocol:pay:foc:top}
         \Indent
-          \State send (\textsc{read}) to \ledger{} and assign largest block
+          \State send (\textsc{read}) to \ledger and assign largest block
           number to $t$
           \label{alg:protocol:pay:foc:read}
           \State $\mathtt{toSubmit} \gets \emptyset$
@@ -1099,7 +1099,7 @@
             \textsc{commitmentSigned} to a transaction without that HTLC to
             counterparty, but have not received the corresponding
             \textsc{revokeAndAck} AND the HTLC expires within $\left[t, t +
-            \tochain{}\right]$}
+            \tochain\right]$}
               \State add $\mathtt{localCom}_n$ of the channel and all
               corresponding valid \texttt{HTLC-success}es and
               \texttt{HTLC-timeout}s (for both $\mathtt{localCom}_n$ and
@@ -1182,7 +1182,7 @@
           $\mathtt{channel} \in \mathtt{channels}$ with ID \textit{pchid}
           \label{alg:protocol:close:coop:ensure}
           \State stop serving any (\textsc{pay}, \textsc{closeChannel}) message
-          from \environment{} for this channel.
+          from \environment for this channel.
           \label{alg:protocol:close:coop:noserve}
           \State mark \texttt{channel} as ``coop closing''
           \If{there are outstanding HTLC outputs in the latest

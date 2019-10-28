@@ -11,7 +11,7 @@
         \item $t$: the latest time, as reported by \gFclock
       \end{itemize}
       \begin{algorithmic}[1]
-        \State Upon receiving any message by \alice{} and prior to handling it:
+        \State Upon receiving any message by \alice and prior to handling it:
         \Indent
           \State send \textsc{read-clock} to \gFclock and assign reply to $t'$
           \If{$t' = t + 1$}
@@ -27,7 +27,7 @@
           \State ensure $\mathtt{logicalOf}(\alice) = \bot$
           \Comment{\orfeas{remove?}}
           \State add (\alice, \texttt{nym}) to \texttt{map}
-          \State send (\textsc{register}) as \alice{} to \gFclock
+          \State send (\textsc{register}) as \alice to \gFclock
         \EndIndent
         \Statex
 
@@ -49,7 +49,7 @@
 
         \State Upon receiving (\textsc{advance-clock}) from \alice:
         \Indent
-          \State send (\textsc{advance-clock}) as \alice{} to \gFclock
+          \State send (\textsc{advance-clock}) as \alice to \gFclock
         \EndIndent
       \end{algorithmic}
     \end{systembox}
