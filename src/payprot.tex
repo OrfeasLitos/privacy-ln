@@ -10,10 +10,10 @@
   }
 
   Messages to and from \bob should be interpreted as \textsc{send} and
-  \textsc{receive} messages to and from \anonfunc with \bob as the sender and
-  the receiver respectively. \bob is a ``logical'' (LN-only) address,
-  therefore \alice need not know \bob's ``real'' address. This address is only
-  known by \anonfunc.
+  \textsc{push} messages to and from $\anonfunc^{\mathrm{push}}$ with \bob as
+  the sender and the receiver respectively. \bob is a ``logical'' (LN-only)
+  address, therefore \alice need not know \bob's ``real'' address. This address
+  is only known by $\anonfunc^{\mathrm{push}}$.
 
   \begin{figure}[H]
     \begin{protocolbox}{$\Pi_{\mathrm{LN}}$ (self is \alice always) --
