@@ -39,9 +39,14 @@
         \State Upon receiving (\textsc{pass-token}) from
         $\mathcal{F}_{\mathrm{token}}$:
         \Indent
-          \State encrypt garbage for every player
-          \State send (\textsc{circulate}, message of next player) to next
-          player
+          \If{$\mathtt{toEnv} = \mathtt{True}$}
+            \State retrieve stored $M$ and send (\textsc{push}, $M$) to
+            \environment
+          \Else
+            \State encrypt garbage for every player
+            \State send (\textsc{circulate}, message of next player) to next
+            player
+          \EndIf
         \EndIndent
         \Statex
 
@@ -54,8 +59,8 @@
             (\textsc{circulate}, $C'$) for the last time for this particular
             payload
           \ElsIf{$M$ is a valid payload}
-            \State store $M$ for returning to \environment upon receiving
-            (\textsc{pass-token}) from $\mathcal{F}_{\mathrm{token}}$
+            \State store $M$
+            \State $\mathtt{toEnv} \gets \mathtt{True}$
           \EndIf
           \State send (\textsc{circulate}, encrypted garbage) to next player
         \EndIndent
