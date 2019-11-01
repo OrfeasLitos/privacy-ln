@@ -1,0 +1,62 @@
+\section{Property Based approach to Payment Anonymity}
+  \label{sec:pay-anon-game}
+  \begin{figure}[H]
+    \begin{gamebox}{Anonymous Payments $\mathcal{C}(\mathcal{P}: \{P_1: c_1,
+    \dots, P_N: c_N\}, t \in \{1, \dots, N\})$}
+      State: Map $\mathcal{P}: P_i \rightarrow c_i$, mapping each player to its
+      non-negative coins
+
+      Initialisation: $\mathtt{max} \gets \sum\limits_{i = 1}^N c_i;
+      \mathtt{stolen} \gets 0; \mathtt{failures} \gets 0$
+
+      \begin{algorithmic}[1]
+        \While{$\mathtt{failures} < t$}
+          \State $P_i, P_j \overset{\$}{\gets} \mathcal{P}; x
+          \overset{\$}{\gets} [0, \mathtt{max}]$
+          \If{$x \leq c_i$}
+            \State $c_j \gets c_j + x; c_i \gets c_i - x$
+          \EndIf
+          \State send (\textsc{ping}) to \adversary
+          \If{response from \adversary is (\textsc{steal}, $P_i$) : $P_i \in
+          \mathcal{P}$}
+            \State $\mathtt{stolen} \gets \mathtt{stolen} + c_i$
+            \State $\mathtt{failures} \gets \mathtt{failures} + 1$
+            \State remove $(P_i, c_i)$ from $\mathcal{P}$
+          \EndIf
+        \EndWhile
+        \State \Return \texttt{stolen}
+      \end{algorithmic}
+    \end{gamebox}
+    \caption{}
+  \end{figure}
+
+  \begin{figure}[H]
+    \begin{simulatorbox}{$\adversary_{\$}(\mathcal{P}: P_1, \dots, P_N)$}
+      \begin{algorithmic}[1]
+        \State Upon receiving (\textsc{ping}): \orfeas{Maybe send vector of
+        players and steal all at once?}
+        \Indent
+          \State $P \overset{\$}{\gets} \mathcal{P}$
+          \State remove $P$ from $\mathcal{P}$
+          \State send (\textsc{steal}, $P$)
+        \EndIndent
+      \end{algorithmic}
+    \end{simulatorbox}
+    \caption{}
+  \end{figure}
+
+  \begin{definition}[Stealing Advantage]
+    \begin{equation*}
+      \mathit{Adv}_{\mathrm{AnonPay}}(\mathcal{C}; \adversary) = E(\mathcal{C};
+      \adversary) - E(\mathcal{C}; \adversary_{\$})
+    \end{equation*}
+  \end{definition}
+
+  \begin{definition}[Balance Privacy]
+    $\mathcal{C}$ has \emph{balance privacy} if
+    \begin{equation*}
+      \forall \text{ ITM } \adversary,
+      \mathit{Adv}_{\mathrm{AnonPay}}(\mathcal{C}; \adversary) < negl(\lambda)
+      \enspace.
+    \end{equation*}
+  \end{definition}
