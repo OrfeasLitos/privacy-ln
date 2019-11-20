@@ -1,0 +1,42 @@
+\begin{figure}[H]
+  \begin{systembox}{$\mathcal{F}_{\mathrm{anonPayNet}}^{\ledger}$}
+    State: $\mathtt{coins} : \mathcal{P} \rightarrow \mathbb{N}$,
+    $\mathtt{id} : \mathcal{P} \rightarrow \mathcal{ID}$, $(pk_{\top},
+    sk_{\top})$
+    \begin{algorithmic}[1]
+      \State Upon receiving (\textsc{register}, $id$, $s$) from $P$:
+      \Indent
+        \State ensure $pk(s) = id$
+        \State send (\textsc{read}) to \ledger as $P$ and assign reply to
+        $\Sigma_P$
+        \State scan $\Sigma_P$ for UTXOs exclusively spendable by $id$ and
+        assign the sum of their coins to $\mathtt{coins}(P)$
+        \State assign $id$ to $\mathtt{id}(P)$
+        \State create \texttt{tx} which pays all funds spendable by $id$ to
+        $pk_{\top}$ (using $s$)
+        \State send (\textsc{submit}, \texttt{tx}) to \ledger as $P$
+      \EndIndent
+      \Statex
+
+      \State Upon receiving (\textsc{pay}, $P_2$, $x$) from $P_1$:
+      \Indent
+        \If{$\mathtt{coins}(P_1) \geq x$}
+          \State $\mathtt{coins}(P_1) = \mathtt{coins}(P_1) - x$
+          \State $\mathtt{coins}(P_2) = \mathtt{coins}(P_2) + x$
+        \EndIf
+      \EndIndent
+      \Statex
+
+      \State Upon receiving (\textsc{exit}, $id$) from $P$:
+      \Indent
+        \State ensure $\mathtt{id}(P) = id$
+        \State create \texttt{tx} which pays $\mathtt{coins}(P)$ from
+        $pk_{\top}$ to $id$ (using $sk_{\top}$)
+        \State assign $0$ to $\mathtt{coins}(P)$
+        \State send (\textsc{submit}, \texttt{tx}) to \ledger as $P$
+      \EndIndent
+    \end{algorithmic}
+  \end{systembox}
+  \caption{Notice that there is no privacy leakage}
+  \label{alg:anon-pay-func}
+\end{figure}
