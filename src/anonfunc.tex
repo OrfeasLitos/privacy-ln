@@ -56,24 +56,21 @@
 
   \begin{figure}[H]
     \begin{systembox}{$\anonfunc^{\mathrm{push}}$}
-      State:
-      \begin{itemize}
-        \item \texttt{map}: a two-way mapping between physical and logical names
-      \end{itemize}
       \begin{algorithmic}[1]
-        \State Upon receiving (\textsc{register}, \texttt{nym}) by \alice:
+        \State Upon receiving (\textsc{send}, \texttt{party}, $M$) from \alice:
+        \Comment{sender optional, can be part of payload}
         \Indent
-          \State ensure $\mathtt{logicalAddressOf}(\alice) = \bot$
-          \Comment{\orfeas{remove?}}
-          \State add (\alice, \texttt{nym}) to \texttt{map}
+          \State $\mathtt{id} \overset{\$}{\gets} \{0, 1\}^{\lambda}$
+          \State store (\texttt{party}, $M$, \texttt{id})
+          \State send (\textsc{new-message}, \texttt{id}) to \adversary
         \EndIndent
         \Statex
 
-        \State Upon receiving (\textsc{send}, \texttt{party}, $M$) from \alice:
+        \State Upon receiving (\textsc{continue}, \texttt{id}) from \adversary:
         \Indent
-          \State send (\textsc{push}, $M$) to
-          \texttt{physicalAddressOf}(\texttt{party}) \Comment{sender optional,
-          can be part of payload}
+          \State retrieve (\texttt{party}, $M$, \texttt{id}) and remove entry
+          from storage
+          \State send (\textsc{push}, $M$) to \texttt{party}
         \EndIndent
         \Statex
       \end{algorithmic}
