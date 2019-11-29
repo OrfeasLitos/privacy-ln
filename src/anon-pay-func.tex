@@ -70,7 +70,7 @@
         \State ensure $\mathtt{id}(P) = id$
         \State create \texttt{tx} which pays $\mathtt{coins}(P)$ from
         $pk_{\top}$ to $id$ (using $sk_{\top}$)
-        \State assign $0$ to $\mathtt{coins}(P)$
+        \State $\mathtt{coins}(P) \gets 0$
         \State send (\textsc{submit}, \texttt{tx}) to \ledger as $P$
       \EndIndent
     \end{algorithmic}
