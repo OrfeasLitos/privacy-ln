@@ -13,8 +13,8 @@
         assign the sum of their coins to $\mathtt{coins}(P)$
         \State assign $(id, s)$ to $\mathtt{id}(P)$
         \State create \texttt{tx} which pays all funds spendable by $id$ to
-        $pk_{\top}$ (using $s$)
-        \State send (\textsc{submit}, \texttt{tx}) to \ledger as $P$
+        $pk_{\top}$ and contains new CRS (using $s$) \TODO{refine}
+        \State send (\textsc{submit}, \texttt{tx}) to \ledger as $id$
       \EndIndent
       \Statex
 
