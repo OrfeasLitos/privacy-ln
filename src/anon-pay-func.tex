@@ -18,13 +18,50 @@
       \EndIndent
       \Statex
 
-      \State Upon receiving (\textsc{pay}, $P_2$, $x$) from $P_1$:
+      \State Upon receiving (\textsc{open}, $P_2$, $x$) from $P_1$:
+      \Indent
+        \State ensure $\mathtt{coins}(P_1) \geq x$
+        \State $\mathit{chid} \overset{\$}{\gets} \{0, 1\}^{\lambda}$
+        \State $\mathtt{coins}(P_1) \gets \mathtt{coins}(P_1) - x$
+        \State $\mathtt{coins}(\mathit{chid})(P_1) \gets x$
+        \State $\mathtt{coins}(\mathit{chid})(P_2) \gets 0$
+        \State create special \texttt{tx} based on most recent CRS and secret
+        keys of $P_1$ and $P_2$. This \texttt{tx} represents \textit{chid}
+        \TODO{refine}
+        \State send (\textsc{submit}, \texttt{tx}) to \ledger as
+        $\mathtt{id}(P_1)$
+      \EndIndent
+      \Statex
+
+      \State Upon receiving (\textsc{pay}, \textit{chid}, $x$) from $P_1$:
       \Indent
         \If{$\mathtt{coins}(P_1) \geq x$}
-          \State $\mathtt{coins}(P_1) = \mathtt{coins}(P_1) - x$
-          \State $\mathtt{coins}(P_2) = \mathtt{coins}(P_2) + x$
+          \State $\mathtt{coins}(\mathit{chid})(P_1) \gets
+          \mathtt{coins}(\mathit{chid})(P_1) - x$
+          \State $\mathtt{coins}(\mathit{chid})(P_2) \gets
+          \mathtt{coins}(\mathit{chid})(P_2) + x$
         \EndIf
-        send (\textsc{network-active}) to \adversary
+        \State send (\textsc{network-active}) to \adversary
+      \EndIndent
+      \Statex
+
+      \State Upon receiving (\textsc{close}, \textit{chid}) from $P_1$:
+      \Indent
+        \State ensure there is a channel \textit{chid} of which $P_1$ is a
+        member
+        \State create special \texttt{tx} that, together with
+        $\mathtt{id}(P_1)_s$ or $\mathtt{id}(P_2)_s$ can generate proof that
+        $P_1$ had $\mathtt{coins}(\mathit{chid})(P_1)$ or $P_2$ had
+        $\mathtt{coins}(\mathit{chid})(P_2)$ in channel \textit{chid} upon
+        closure \TODO{refine}
+        \State $\mathtt{coins}(P_1) \gets \mathtt{coins}(P_1) +
+        \mathtt{coins}(\mathit{chid})(P_1)$
+        \State $\mathtt{coins}(P_2) \gets \mathtt{coins}(P_2) +
+        \mathtt{coins}(\mathit{chid})(P_2)$
+        \State $\mathtt{coins}(\mathit{chid})(P_1) \gets 0$
+        \State $\mathtt{coins}(\mathit{chid})(P_2) \gets 0$
+        \State send (\textsc{submit}, \texttt{tx}) to \ledger as
+        $\mathtt{id}(P_1)$
       \EndIndent
       \Statex
 
